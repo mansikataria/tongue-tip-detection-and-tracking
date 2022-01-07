@@ -57,7 +57,7 @@ while(cap.isOpened()):
     print(i)
     
     color = (0, 0, 255)
-    if(maxv >= 2.4 and maxv <=6):
+    if(maxv >= 2.3 and maxv <=6):
         max_mag = maxl
         # print(index)
         image = cv.circle(image_ret[mouth_y:mouth_y + mouth_h, mouth_x:mouth_x + mouth_w], max_mag, 5, color, thickness=-1)
