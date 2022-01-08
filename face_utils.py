@@ -40,7 +40,7 @@ def shape_to_np(shape, dtype="int"):
 	return coords
 
 def get_mouth_loc_with_height(image):
-	x,y,w,h,h_in = 1,1,1,1,1
+	x1,y1,w1,h1,h_in = 1,1,1,1,1
 	image = imutils.resize(image, width=500)
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 	# detect faces in the grayscale image
@@ -64,7 +64,7 @@ def get_mouth_loc_with_height(image):
 				for (x, y) in shape[i:j]:
 					cv2.circle(clone, (x, y), 1, (0, 0, 255), -1)
             	# extract the ROI of the face region as a separate image
-				(x, y, w, h) = cv2.boundingRect(np.array([shape[i:j]]))
+				(x1, y1, w1, h1) = cv2.boundingRect(np.array([shape[i:j]]))
 				# roi = image[y:y + h, x:x + w]
 				# roi = imutils.resize(roi, width=250, inter=cv2.INTER_CUBIC)
 		    	# show the particular face part
@@ -79,7 +79,7 @@ def get_mouth_loc_with_height(image):
             	# extract the ROI of the face region as a separate image
 				(x, y, w, h) = cv2.boundingRect(np.array([shape[i:j]]))
 				h_in = h	
-	return x,y,w,h, image, h_in
+	return x1,y1,w1,h1, image, h_in
 
 def get_mouth_loc(image):
 	image = imutils.resize(image, width=500)
