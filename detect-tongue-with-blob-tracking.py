@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from numpy.core.fromnumeric import shape
 from numpy.core.numeric import Inf
 
-from face_utils import get_mouth_loc, get_mouth_loc_with_height
+from face_utils import get_mouth_loc_with_height
 
 cap = cv.VideoCapture("test/test_vid.mp4")
 ret, first_frame = cap.read()
@@ -29,7 +29,7 @@ while(cap.isOpened()):
     # cv.imshow("input2", mouth)
     
     i=i+1
-    
+    print("frame: "+ str(i))
     # cv.imshow("Frame", frame)
 
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY) 
@@ -66,18 +66,19 @@ while(cap.isOpened()):
         x_fin,y_fin= kp[0].pt
         for point in kp:
             x,y= point.pt
-            if(x_fin<x):
-                x_fin = x
+            # if(x_fin<x):
+            #     x_fin = x
             if(y_fin<y):
                 y_fin = y
+                x_fin = x
     
     print(x_fin,y_fin)
 
     #convert
     x_fin = (x_fin*x1)/x2
-    y_fin = (y_fin*y1)/y2 
+    y_fin = (y_fin*y1)/y2
     print(x_fin,y_fin)
-
+    
     # gray = cv.cvtColor(image_ret, cv.COLOR_BGR2GRAY) 
     # flow = cv.calcOpticalFlowFarneback(prev_gray[mouth_y:mouth_y + mouth_h, mouth_x:mouth_x + mouth_w], 
     #     gray[mouth_y:mouth_y + mouth_h, mouth_x:mouth_x + mouth_w],None,0.5, 3, 15, 3, 5, 1.2, 0)
@@ -96,20 +97,25 @@ while(cap.isOpened()):
      #Logic
     cv.putText(image_ret, "inner mouth height: " + str(height_of_inner_mouth), (10, 30), cv.FONT_HERSHEY_SIMPLEX,
 			0.7, (0, 0, 255), 2)
-    cv.putText(image_ret, "blob: " + str(x_fin) + str(y_fin), (10, 60), cv.FONT_HERSHEY_SIMPLEX,
+    cv.putText(image_ret, "blob: " + str(x_fin) + "," + str(y_fin), (10, 60), cv.FONT_HERSHEY_SIMPLEX,
 			0.7, (0, 0, 255), 2)
     if(height_of_inner_mouth > 8) :
-        if(y_fin > 15.5) :
+        if(y_fin > 14) :
             color = (0, 0, 255)
             print(image_ret[mouth_y:mouth_y + mouth_h, mouth_x:mouth_x + mouth_w].shape)
             # print()
             image = cv.circle(image_ret[mouth_y:mouth_y + mouth_h, mouth_x:mouth_x + mouth_w], (math.floor(x_fin), math.ceil(y_fin)), 4, color, thickness=-1)
             cv.imshow("input2", image_ret)
             cv.imwrite("frames/"+str(i)+".jpg", image_ret)
+            # cv.imwrite("frames/"+str(i)+"-no-dot.jpg", image_ret)
         else:
             cv.imshow("input2", image_ret)
+            cv.imwrite("frames/"+str(i)+".jpg", image_ret)
+            # cv.imwrite("frames/"+str(i)+"-no-dot.jpg", image_ret)
     else:
         cv.imshow("input2", image_ret)
+        cv.imwrite("frames/"+str(i)+".jpg", image_ret)
+        # cv.imwrite("frames/"+str(i)+"-no-dot.jpg", image_ret)
             # if(y_fin != 1):
             #     image = cv.circle(image_ret[mouth_y:mouth_y + mouth_h, mouth_x:mouth_x + mouth_w], (x_fin, y_fin), 4, color, thickness=-1)
             # cv.imshow("input2", image_ret)
