@@ -13,8 +13,8 @@ cap = cv.VideoCapture("test/test_vid.mp4")
 width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH) + 0.5)
 height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT) + 0.5)
 size = (width, height)
-fourcc = cv.VideoWriter_fourcc(*'XVID')
-out = cv.VideoWriter('output.avi', -1, fourcc, size)
+# fourcc = cv.VideoWriter_fourcc(*'XVID')
+# out = cv.VideoWriter('output.avi', -1, fourcc, size)
 
 
 i = 0
@@ -80,12 +80,12 @@ while(cap.isOpened()):
             #     image = cv.circle(image_ret[mouth_y:mouth_y + mouth_h, mouth_x:mouth_x + mouth_w], (x_fin, y_fin), 4, color, thickness=-1)
             # cv.imshow("input2", image_ret)
 
-    out.write(image_ret)
+    # out.write(image_ret)
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
     
     
 # The following frees up resources and
-out.release()
+# out.release()
 cap.release()
 cv.destroyAllWindows()
