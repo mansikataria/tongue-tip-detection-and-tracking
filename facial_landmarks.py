@@ -7,8 +7,8 @@ import dlib
 import cv2
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-p", "--shape-predictor", required=True,
-	help="path to facial landmark predictor")
+ap.add_argument("-p", "--shape-predictor", required=False,
+	help="path to facial landmark predictor", default="shape_predictor_68_face_landmarks.dat")
 ap.add_argument("-i", "--image", required=True,
 	help="path to input image")
 args = vars(ap.parse_args())
@@ -43,6 +43,19 @@ for (i, rect) in enumerate(rects):
 	# and draw them on the image
 	for (x, y) in shape:
 		cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
-# show the output image with the face detections + facial landmarks
-cv2.imshow("Output", image)
+	# show the output image with the face detections + facial landmarks
+	cv2.imshow("Output", image)
+	cv2.imwrite("result/face_pic.jpg", image)
+
+	for (name, (i, j)) in face_utils.FACIAL_LANDMARKS_IDXS.items():
+		# extract the ROI of the face region as a separate image
+		(x1, y1, w1, h1) = cv2.boundingRect(np.array([shape[i:j]]))
+		roi = image[y1:y1 + h1, x1:x1 + w1]
+		roi = imutils.resize(roi, width=250, inter=cv2.INTER_CUBIC)
+        # show the particular face part
+		cv2.imshow(name, roi)
+		cv2.imwrite("result/face_"+name+"_pic.jpg", roi)
+			
+            
+            
 cv2.waitKey(0)
